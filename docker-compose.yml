@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  flood-control:
+    build: ./
+    command: ./app
+    depends_on:
+      - redis
+    environment:
+      REDIS_HOST: "redis"
+  redis:
+    image: redis
+    container_name: redis
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+    ports:
+      - ${REDIS_PORT_EXTERNAL}:${REDIS_PORT_INTERNAL}
+    restart: always
+    command: ["redis-server", "--databases", "1"]
+
+
